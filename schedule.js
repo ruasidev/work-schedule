@@ -1,7 +1,7 @@
 const table = document.getElementsByTagName("table")[0];
 const d = new Date()
 function display(){
-    document.querySelector('#dateDisplay').textContent = `Today is ${getDate()} and the current time is ${getCurrentTime()}:${getSeconds()}`
+    document.querySelector('#dateDisplay').innerHTML = `Today is ${getDate()}</br>The current time is ${getCurrentTime()}:${getSeconds()}`
 }
 display()
 setInterval(display, 1000)
@@ -20,6 +20,17 @@ function displayDate(){
 
 // console.log(dates)
 
+function convertTimetoValue(time){
+    let hour = time.charAt(0) + time.charAt(1)
+    let minute = time.charAt(3) + time.charAt(4)
+    hour = parseInt(hour)
+    minute = parseInt(minute)
+    hour = hour * 60
+    return hour + minute
+}
+
+
+
 let times = []
 
 for(var i=1; i<table.rows.length; i++){
@@ -29,6 +40,9 @@ for(var i=1; i<table.rows.length; i++){
     // }
 
     times.push(table.rows[i].children[2].textContent)
+    // if(new Date().getDate() == parseInt(table.rows[i].children[1].textContent.substring(9,10))){
+    //     if(convertTimetoValue(new Date().getTime())<times[i]||convertTimetoValue(new Date().getTime())times[i])
+    // }
 
     if(table.rows[i].children[0].textContent == "Yes"){
         table.rows[i].style.backgroundColor = "#ffa6a6"
@@ -36,6 +50,27 @@ for(var i=1; i<table.rows.length; i++){
         table.rows[i].style.backgroundColor = "lightgreen"
     }
 }
+
+function isWorking(day){
+    let timeArray = []
+    for(var i=0;i<times.length;i++){
+        if(times[i]!==''){
+            let firstTime = times[i].substring(0, 4)
+            let secondTime = times[i].substring(8, 12)
+            firstTime = convertTimetoValue(firstTime)
+            secondTime = convertTimetoValue(secondTime)
+            timeArray.push(`${firstTime} ${secondTime}`)
+        } else {
+            timeArray.push('')
+        }
+    }
+    return timeArray[day]
+}
+
+console.log(convertTimetoValue("17:00"))
+console.log(convertTimetoValue("21:30"))
+console.log(isWorking(0))
+
 
 function getCurrentTime(){
     let hours = new Date().getHours()
